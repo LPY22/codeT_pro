@@ -1,6 +1,6 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT license.
-
+import logging
 from typing import Optional, Dict
 import contextlib
 import faulthandler
@@ -11,7 +11,9 @@ import platform
 import signal
 import tempfile
 
-def _pack_test_cases(test_cases, timeout): #在check_correctness_with_test_cases中有调用，用来把多行assert的test case 防入有check_program字符串中
+
+def _pack_test_cases(test_cases,
+                     timeout):  # 在check_correctness_with_test_cases中有调用，用来把多行assert的test case 防入有check_program字符串中
     blank_4 = ' ' * 4
     blank_8 = ' ' * 8
     blank_12 = ' ' * 12
@@ -21,7 +23,7 @@ def _pack_test_cases(test_cases, timeout): #在check_correctness_with_test_cases
         result += f'\n{blank_4}try:\n{blank_8}with time_limit({timeout}):\n{blank_12}{multi_line_assertion}\
                     \n{blank_12}pass_result.append(True)\n{blank_4}except Exception as e:\n{blank_8}pass_result.append(False)\n'
     result += '\n    return pass_result\n'
-    result += f'\nglobal final_result\nfinal_result = check()'  #过了就是true 有没过的就抛出异常就是false
+    result += f'\nglobal final_result\nfinal_result = check()'  # 过了就是true 有没过的就抛出异常就是false
     return result
 
 
@@ -30,7 +32,10 @@ def check_correctness_with_test_cases(task_id, prompt, completion, test_cases, t
     Evaluates the functional correctness of a solution_content by running the test
     suite provided in the problem. 
     """
-    extend_timeout = timeout*len(test_cases)
+    extend_timeout = timeout * len(test_cases)
+
+    # if(extend_timeout>10):
+    #     logging.info(test_cases)
 
     def unsafe_execute():
 
@@ -48,19 +53,24 @@ def check_correctness_with_test_cases(task_id, prompt, completion, test_cases, t
 
             # Construct the check program and run it.
             check_program = (
-                prompt + completion + "\n" +
-                _pack_test_cases(test_cases, timeout)
+                    prompt + completion + "\n" +
+                    _pack_test_cases(test_cases, timeout)
             )
 
             try:
                 exec_globals = {'time_limit': time_limit}
                 with swallow_io():
-                    exec(check_program, exec_globals)
+                    with time_limit(extend_timeout):
+                        exec(check_program, exec_globals)
                 result.append(exec_globals['final_result'])
             except TimeoutException:
                 result.append("timed out")
             except BaseException as e:
                 result.append(f"failed: {e}")
+            except EOFError as e:
+                result.append(f"EOFError:{e}")
+            except Exception:
+                result.append(f"未知异常类型")
 
             # Needed for cleaning up.
             shutil.rmtree = rmtree
@@ -68,7 +78,7 @@ def check_correctness_with_test_cases(task_id, prompt, completion, test_cases, t
             os.chdir = chdir
 
     manager = multiprocessing.Manager()
-    result = manager.list() #穿件一个多线程共享的list对象代理result 在unsafe_execute函数中有调用
+    result = manager.list()  # 创建一个多线程共享的list对象代理result 在unsafe_execute函数中有调用
 
     p = multiprocessing.Process(target=unsafe_execute)
     p.start()
@@ -86,6 +96,7 @@ def check_correctness_with_test_cases(task_id, prompt, completion, test_cases, t
         passed=(type(result[0]) == list) and len(result[0]) > 0,
         result=result[0]
     )
+
 
 def check_correctness(task_id: str, prompt: str, completion: str, test: str, entry_point: str, timeout: float) -> Dict:
     """
@@ -109,14 +120,15 @@ def check_correctness(task_id: str, prompt: str, completion: str, test: str, ent
 
             # Construct the check program and run it.
             check_program = (
-                prompt + completion + "\n" + test + "\n" + f'check({entry_point})'  #benchmark里面给的标准测试用例是一个函数 check(candidate) 所以要加上一句调用
+                    prompt + completion + "\n" + test + "\n" + f'check({entry_point})'
+            # benchmark里面给的标准测试用例是一个函数 check(candidate) 所以要加上一句调用
             )
 
             try:
                 exec_globals = {}
                 with swallow_io():
                     with time_limit(timeout):
-                        exec(check_program, exec_globals) #globals作为全局变量传过去 可以预先定义一些全局变量 代码中生成的的变量也会放在字典里
+                        exec(check_program, exec_globals)  # globals作为全局变量传过去 可以预先定义一些全局变量 代码中生成的的变量也会放在字典里
                 result.append("passed")
             except TimeoutException:
                 result.append("timed out")
@@ -133,7 +145,7 @@ def check_correctness(task_id: str, prompt: str, completion: str, test: str, ent
 
     p = multiprocessing.Process(target=unsafe_execute)
     p.start()
-    p.join(timeout=timeout+1)
+    p.join(timeout=timeout + 1)
     if p.is_alive():
         p.kill()
 
@@ -147,10 +159,12 @@ def check_correctness(task_id: str, prompt: str, completion: str, test: str, ent
         completion=completion,
     )
 
+
 @contextlib.contextmanager
-def time_limit(seconds: float):#测量执行时间，如果超时则报错
+def time_limit(seconds: float):  # 测量执行时间，如果超时则报错
     def signal_handler(signum, frame):
         raise TimeoutException("Timed out!")
+
     signal.setitimer(signal.ITIMER_REAL, seconds)
     signal.signal(signal.SIGALRM, signal_handler)
     try:
@@ -161,7 +175,7 @@ def time_limit(seconds: float):#测量执行时间，如果超时则报错
 
 @contextlib.contextmanager
 def swallow_io():
-    stream = WriteOnlyStringIO()#重定向，将标准输入输出和错误输出流从定向到内存
+    stream = WriteOnlyStringIO()  # 重定向，将标准输入输出和错误输出流从定向到内存
     with contextlib.redirect_stdout(stream):
         with contextlib.redirect_stderr(stream):
             with redirect_stdin(stream):
@@ -170,8 +184,8 @@ def swallow_io():
 
 @contextlib.contextmanager
 def create_tempdir():
-    with tempfile.TemporaryDirectory() as dirname: #临时创建一个临时目录，并在退出上下文时自动清理该临时目录
-        with chdir(dirname): #切换到该目录
+    with tempfile.TemporaryDirectory() as dirname:  # 临时创建一个临时目录，并在退出上下文时自动清理该临时目录
+        with chdir(dirname):  # 切换到该目录
             yield dirname
 
 
@@ -179,7 +193,7 @@ class TimeoutException(Exception):
     pass
 
 
-class WriteOnlyStringIO(io.StringIO):#继承了io.StringIO 禁止了所有的读操作
+class WriteOnlyStringIO(io.StringIO):  # 继承了io.StringIO 禁止了所有的读操作
     """ StringIO that throws an exception when it's read from """
 
     def read(self, *args, **kwargs):
@@ -201,21 +215,21 @@ class redirect_stdin(contextlib._RedirectStream):  # type: ignore
 
 
 @contextlib.contextmanager
-def chdir(root):#如果传入的root目录是“。”当前目录的话，直接yield切回去执行with代码块内的代码，执行完直接return如果不是的话把当前目录存在cwd中
+def chdir(root):  # 如果传入的root目录是“。”当前目录的话，直接yield切回去执行with代码块内的代码，执行完直接return如果不是的话把当前目录存在cwd中
     if root == ".":
         yield
         return
     cwd = os.getcwd()
-    os.chdir(root)#切换工作目录到root
+    os.chdir(root)  # 切换工作目录到root
     try:
         yield
-    except BaseException as exc:#(try)里面是yield也就是执行with代码块的上下文内容，如果其中抛出来异常就可以被except BaseException as exc接收
+    except BaseException as exc:  # (try)里面是yield也就是执行with代码块的上下文内容，如果其中抛出来异常就可以被except BaseException as exc接收
         raise exc
-    finally:#不论try中代码是什么情况，finally一定执行，就是重新切回之前暂存的工作目录
+    finally:  # 不论try中代码是什么情况，finally一定执行，就是重新切回之前暂存的工作目录
         os.chdir(cwd)
 
 
-def reliability_guard(maximum_memory_bytes: Optional[int] = None): #禁用了一系列会威胁到系统安全的python模块和内建命令
+def reliability_guard(maximum_memory_bytes: Optional[int] = None):  # 禁用了一系列会威胁到系统安全的python模块和内建命令
     """
     This disables various destructive functions and prevents the generated code
     from interfering with the test (e.g. fork bomb, killing other processes,
@@ -228,7 +242,7 @@ def reliability_guard(maximum_memory_bytes: Optional[int] = None): #禁用了一
     with caution.
     """
 
-    if maximum_memory_bytes is not None:#对内存大小，栈大小 等做出限制
+    if maximum_memory_bytes is not None:  # 对内存大小，栈大小 等做出限制
         import resource
         resource.setrlimit(resource.RLIMIT_AS, (maximum_memory_bytes, maximum_memory_bytes))
         resource.setrlimit(resource.RLIMIT_DATA, (maximum_memory_bytes, maximum_memory_bytes))

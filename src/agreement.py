@@ -4,6 +4,7 @@
 from collections import defaultdict, Counter
 import logging
 import math
+import src.optimize
 
 
 logging.basicConfig(
@@ -136,11 +137,44 @@ class DualAgreement:#set_consistency = DualAgreement(data_manager)
         
         self.solution_passed_cases_by_task = defaultdict(defaultdict)#两层的嵌套字典
         self.caseset_passed_solutions_by_task = defaultdict(defaultdict)
+
+        self.caseset_crossScore_by_task = defaultdict(defaultdict)
         
         self._get_solution_passed_case_set()
         logger.info('got solution passed case sets')
+
+
+
+
+        logger.info('排除全通过测试中...')
+        # self._excludeAllpassTest()
+        src.optimize.excludeAllpassTest(self)
+        logger.info('excluded allPass testcase...')
+
+
         self._get_caseset_passed_solutions()
         logger.info('got case set passed solutions')
+        #除去每个task中那些通过了所有solution的testcase
+
+        self._get_caseset_crossScore2()
+        logger.info('计算测试集cross分数2')
+
+
+    def _excludeAllpassTest(self):
+        for task_id in self.solution_passed_cases_by_task.keys():
+            test_case_counter = Counter()
+            for solution in self.solution_passed_cases_by_task[task_id]:
+                test_case_counter += Counter(self.solution_passed_cases_by_task[task_id][solution])
+            totolSolutionNum = len(self.solution_passed_cases_by_task[task_id])
+            allPassTestNum = 0
+            for test_case in test_case_counter:
+                if(test_case_counter[test_case] == totolSolutionNum):
+                    allPassTestNum+=1
+                    for solution in self.solution_passed_cases_by_task[task_id]:
+                        self.solution_passed_cases_by_task[task_id][solution] = [ test for test in self.solution_passed_cases_by_task[task_id][solution] if test!=test_case]
+            print(f"task{task_id}中排除了{allPassTestNum}个全通过用例")
+
+
     
     def _get_solution_passed_case_set(self):#以solution为key value是能通过的testcase 列表 这个task有几个solution对应字典里面就有几个key
         for task_id in self.dual_exec_results_by_task: #这里dual_exec_results_by_task是之前data_manager中计算出的 带重复的id对
@@ -153,11 +187,37 @@ class DualAgreement:#set_consistency = DualAgreement(data_manager)
     def _get_caseset_passed_solutions(self):#以testcase为key value是能通过的solution列表 这个task有几个testcase对应字典里面有几个key
         for task_id in self.solution_passed_cases_by_task.keys():
             for solution in self.solution_passed_cases_by_task[task_id].keys():
-                case_set = tuple(sorted(self.solution_passed_cases_by_task[task_id][solution]))  # case_set: set of (test_case, score)
+                case_set = tuple(sorted(self.solution_passed_cases_by_task[task_id][solution]))  # case_set: set of (test_case)
                 if case_set in self.caseset_passed_solutions_by_task[task_id]:
                     self.caseset_passed_solutions_by_task[task_id][case_set].append(solution)
                 else:
                     self.caseset_passed_solutions_by_task[task_id][case_set] = [solution]
+
+    def _get_caseset_crossScore(self):#通过测试集的跨度来计算分数 最后的分数用len(solutions)*crossScore
+        for task_id in self.caseset_passed_solutions_by_task.keys():
+            length = len(self.caseset_passed_solutions_by_task[task_id].keys())
+            scoreList_by_task = []
+            for caseset in self.caseset_passed_solutions_by_task[task_id].keys():
+                crossList = Counter()
+                for caseset_j in self.caseset_passed_solutions_by_task[task_id].keys():
+                    if not set(caseset).isdisjoint(set(caseset_j)):
+                        crossList[caseset_j]=1
+                self.caseset_crossScore_by_task[task_id][caseset] = len(crossList)/length
+                scoreList_by_task.append(len(crossList)/length)
+            # print(f'task_id:{task_id},crossScore:{scoreList_by_task}')
+    def _get_caseset_crossScore2(self):#通过测试集的跨度来计算分数 最后的分数用len(solutions)*crossScore
+        for task_id in self.caseset_passed_solutions_by_task.keys():
+            length = len(self.caseset_passed_solutions_by_task[task_id].keys())
+            scoreList_by_task = []
+            for caseset in self.caseset_passed_solutions_by_task[task_id].keys():
+                crossList = Counter()
+                for caseset_j in self.caseset_passed_solutions_by_task[task_id].keys():
+                    intersection = len(set(caseset).intersection(set(caseset_j)))
+                    if intersection>0:
+                        crossList[caseset_j]=len(self.caseset_passed_solutions_by_task[task_id][caseset_j])*intersection
+                self.caseset_crossScore_by_task[task_id][caseset] = len(list(crossList.elements()))/length
+                scoreList_by_task.append(len(crossList)/length)
+            # print(f'task_id:{task_id},crossScore:{scoreList_by_task}')
     
     def get_sorted_solutions_without_iter(self):
         logger.info('Start to get sorted solutions without iter')
@@ -172,4 +232,19 @@ class DualAgreement:#set_consistency = DualAgreement(data_manager)
                 solution_str_set = [self.solution_id_to_string_by_task[task_id][solution] for solution in solution_set] #这里把序号转成字符串 放到solution_str_set列表中
                 flatted_case_set_passed_solutions.append((solution_str_set, case_set_score*solution_set_score)) #结构是  [([],score1),([],score2),([],score3)]
             ranked_solutions_by_task[task_id] = sorted(flatted_case_set_passed_solutions, key=lambda x: x[1], reverse=True) #降序排列，分数高的排在前面 key=x[1] 表示按分数case_set_score*solution_set_score来排
+        return ranked_solutions_by_task
+
+    def get_cross_sorted_solutions_without_iter(self):
+        logger.info('start to get cross sorted solution without iter')
+        ranked_solutions_by_task = defaultdict(list)
+        for task_id in self.caseset_passed_solutions_by_task.keys():
+            flatted_case_set_passed_solutions = []
+            for case_set in self.caseset_passed_solutions_by_task[task_id].keys():
+                solution_set = self.caseset_passed_solutions_by_task[task_id][case_set]
+                solution_set_score = len(solution_set)
+                # solution_set_score = math.sqrt(len(solution_set))
+                case_set_score = self.caseset_crossScore_by_task[task_id][case_set]
+                solution_str_set = [self.solution_id_to_string_by_task[task_id][solution] for solution in solution_set]
+                flatted_case_set_passed_solutions.append((solution_str_set,case_set_score))
+            ranked_solutions_by_task[task_id] = sorted(flatted_case_set_passed_solutions,key = lambda x:x[1],reverse=True)
         return ranked_solutions_by_task

@@ -10,6 +10,7 @@ from src.execution import evaluate_with_test_code, evaluate_with_test_cases
 from src.io_utils import Tools
 from src.agreement import DataManager, DualAgreement
 from src.evaluation import pass_at_K, get_result_of_sorted_solutions
+from src.optimize import excludeAllpassTest
 
 logging.basicConfig(
     format="SystemLog: [%(asctime)s][%(name)s][%(levelname)s] - %(message)s",
@@ -31,8 +32,25 @@ if __name__ == '__main__':
     # 通过命令行赋值
     # args = parser.parse_args()
     # 在代码中手动为 args 赋值
+    source_solution_path={"HumanEval":"./data/dataset/HumanEval_for_code_generation.jsonl",
+                          "MBPP":"./data/dataset/mbpp_sanitized_for_code_generation.jsonl",
+                          "APPS":"./data/dataset/APPS_zeroshot_for_code_generation.jsonl",
+                          "CodeContests":"./data/dataset/CodeContests_zeroshot_for_code_generation.jsonl"}
+    source_test_path={"HumanEval":"./data/dataset/HumanEval_for_test_case_generation.jsonl",
+                          "MBPP":"./data/dataset/mbpp_sanitized_for_test_case_generation.jsonl",
+                          "APPS":"./data/dataset/APPS_zeroshot_for_test_case_generation.jsonl",
+                          "CodeContests":"./data/dataset/CodeContests_zeroshot_for_test_case_generation.jsonl"}
+
+    # predict_solution_path={}
+    # predict_test_path={}
+    datasetName="HumanEval"
+    modelParamsName = "davinci002_temp0.8_topp0.95_num100_max300"
+    # modelParamsName = "incoder6B_temp0.8_topp0.95_num100_max300"
+    # modelParamsName = "MBPP_davinci002_temp0.8_topp0.95_num100_max300_code_solution.jsonl"
+    # logger.info(datasetName+"\t"+modelParamsName)
+    logger.info(f"datasetName:{datasetName}\tmodelParamsName:{modelParamsName}")
     args = argparse.Namespace(
-        source_path_for_solution="./data/dataset/HumanEval_for_code_generation.jsonl",
+        source_path_for_solution=source_solution_path[datasetName],
         #{
         #  task_id:
         #  prompt:
@@ -40,8 +58,8 @@ if __name__ == '__main__':
         #  canonical_solution:
         #  test:
         # }
-        predict_path_for_solution="./data/generated_data/HumanEval_davinci002_temp0.8_topp0.95_num100_max300_code_solution.jsonl",
-        source_path_for_test="./data/dataset/HumanEval_for_test_case_generation.jsonl",
+        predict_path_for_solution="./data/generated_data/"+datasetName+"_"+modelParamsName+"_"+"code_solution.jsonl",
+        source_path_for_test=source_test_path[datasetName],
         # {
         #  task_id:
         #  prompt:
@@ -49,13 +67,14 @@ if __name__ == '__main__':
         #  canonical_solution:
         #  test:
         # }
-        predict_path_for_test="./data/generated_data/HumanEval_davinci002_temp0.8_topp0.95_num100_max300_test_case.jsonl",
+        predict_path_for_test="./data/generated_data/"+datasetName+"_"+modelParamsName+"_"+"test_case.jsonl",
         cache_dir="./cache_dir",
         timeout=0.1,
         test_case_limit=5
     )
+    logger.info(args.predict_path_for_solution)
+    logger.info(args.predict_path_for_test)
 
-    
     handled_solutions, task_count = PostProcessor.map_task_id_for_solution(args.predict_path_for_solution, args.source_path_for_solution)
     #handled_solutions solution的字典列表 task_count有多少个task
     # {
@@ -66,18 +85,28 @@ if __name__ == '__main__':
     #     'completion': processed_code
     # }
     handled_test_cases = PostProcessor.map_task_id_for_test_case(args.predict_path_for_test, args.source_path_for_test)
-    #返回test_case的defaultdict key是taskid value是列表
-    ground_truth_exec_result = evaluate_with_test_code(handled_solutions, timeout=args.timeout)#得到一个字典列表，比handled_solution 多了两个属性passed 和 result
-    dual_exec_result = evaluate_with_test_cases(handled_solutions, handled_test_cases, timeout=args.timeout, limit=args.test_case_limit)#得到每个solution用对应生成的test运行的结果字典
-    #得到了两个字典列表
-    Tools.dump_pickle(os.path.join(args.cache_dir, 'ground_truth_exec_result.pkl'), ground_truth_exec_result)#中间结果序列化
-    Tools.dump_pickle(os.path.join(args.cache_dir, 'dual_exec_result.pkl'), dual_exec_result)
-    
+    # 返回test_case的defaultdict key是taskid value是列表
+    # directory = os.path.join(args.cache_dir, datasetName, modelParamsName)
+    # if not os.path.exists(directory):
+    #     os.makedirs(directory)
+    # ground_truth_exec_result = evaluate_with_test_code(handled_solutions, timeout=args.timeout)#得到一个字典列表，比handled_solution 多了两个属性passed 和 result
+    # Tools.dump_pickle(os.path.join(directory,'ground_truth_exec_result.pkl'), ground_truth_exec_result)#中间结果序列化
+
+    # dual_exec_result = evaluate_with_test_cases(handled_solutions, handled_test_cases, timeout=args.timeout, limit=args.test_case_limit)#得到每个solution用对应生成的test运行的结果字典
+    # # #得到了两个字典列表
+    # Tools.dump_pickle(os.path.join(directory,'dual_exec_result.pkl'), dual_exec_result)
+
+    ground_truth_exec_result = Tools.load_pickle(os.path.join(args.cache_dir,datasetName,modelParamsName,'ground_truth_exec_result.pkl'))
+    dual_exec_result = Tools.load_pickle(os.path.join(args.cache_dir,datasetName,modelParamsName,'dual_exec_result.pkl'))
+
+    # dual_exec_result,handled_test_cases = excludeAllpassTest(dual_exec_result,handled_test_cases,handled_solutions)
+
     data_manager = DataManager(dual_exec_result, handled_solutions, handled_test_cases, args.test_case_limit)#传入了testcase的运行结果，solution和testcase的字典列表，还有限制
     #构造函数初始化data_mamager
     set_consistency = DualAgreement(data_manager)
     #初识化DualAgreement
-    ranked_result = set_consistency.get_sorted_solutions_without_iter()
+    # ranked_result = set_consistency.get_sorted_solutions_without_iter()
+    ranked_result = set_consistency.get_cross_sorted_solutions_without_iter()
     #得到一个字典 {task_id1:[([solution_str1,solution_str2,,],score1),([],score2),([],score3)] #在一个列表里面的solution_str属于一个共识集，能通过相同的测试用例集分数也自然相同
     #            task_id2:[([],score1),([],score2),([],score3)]}
 

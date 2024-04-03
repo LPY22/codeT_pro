@@ -86,9 +86,9 @@ def evaluate_with_test_cases(
             existed_completion[task_id].add(completion)
             task_test_cases = test_cases_dict[task_id] #读出来的是该问题的测试用例的列表
             # 测试
-            print(type(task_test_cases))
-            print("取task_test_case第一项"+task_test_cases[0])
-            print(task_test_cases[0][0])
+            # print(type(task_test_cases))
+            # print(task_test_cases[0])
+            # print(task_test_cases[0][0])
 
             if not task_test_cases:
                 continue
