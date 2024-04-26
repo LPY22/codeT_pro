@@ -34,7 +34,8 @@ def _turn_solution_scores_into_choose_count(sorted_solution_scores, topk):
         for solutions, score in sorted_solution_scores[1:]:#对于第二个及以后的元组
             if score == last_score:
                 last_solutions = merged_solutions_and_score[-1][0]
-                merged_solutions_and_score[-1] = (last_solutions + solutions, score) #如果分数一样，就把两个共识集里面的solution合并，等于是完全按照分数score来排列
+                # merged_solutions_and_score[-1] = (last_solutions + solutions, score) #如果分数一样，就把两个共识集里面的solution合并，等于是完全按照分数score来排列
+                merged_solutions_and_score[-1] = (list(set(last_solutions) & set(solutions)), score) #如果分数一样，就把两个共识集里面的solution合并，等于是完全按照分数score来排列
             else:
                 merged_solutions_and_score.append((solutions, score)) #不同就直接往后append,然后把last_score往后传递
                 last_score = score

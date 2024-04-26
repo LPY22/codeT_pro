@@ -1,0 +1,3516 @@
+{
+    "meta": {
+        "version": "7.2.2",
+        "timestamp": "2024-04-26T15:43:56.908609",
+        "branch_coverage": true,
+        "show_contexts": false
+    },
+    "files": {
+        "solutions/HumanEval_0_solution_0.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                11,
+                12,
+                13,
+                14,
+                15,
+                17
+            ],
+            "summary": {
+                "covered_lines": 10,
+                "num_statements": 10,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    11
+                ],
+                [
+                    12,
+                    13
+                ],
+                [
+                    12,
+                    17
+                ],
+                [
+                    14,
+                    12
+                ],
+                [
+                    14,
+                    15
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_1.py": {
+            "executed_lines": [
+                1,
+                4,
+                8
+            ],
+            "summary": {
+                "covered_lines": 3,
+                "num_statements": 3,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 2,
+                "num_partial_branches": 0,
+                "covered_branches": 2,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    -8
+                ],
+                [
+                    8,
+                    -4
+                ],
+                [
+                    8,
+                    8
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_10.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    9,
+                    10
+                ],
+                [
+                    9,
+                    12
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_11.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                11,
+                12,
+                13,
+                14,
+                15
+            ],
+            "summary": {
+                "covered_lines": 9,
+                "num_statements": 9,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    11
+                ],
+                [
+                    12,
+                    13
+                ],
+                [
+                    12,
+                    15
+                ],
+                [
+                    13,
+                    12
+                ],
+                [
+                    13,
+                    14
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_12.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13
+            ],
+            "summary": {
+                "covered_lines": 8,
+                "num_statements": 8,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    10,
+                    11
+                ],
+                [
+                    10,
+                    13
+                ],
+                [
+                    11,
+                    10
+                ],
+                [
+                    11,
+                    12
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_13.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13
+            ],
+            "summary": {
+                "covered_lines": 8,
+                "num_statements": 8,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    9,
+                    10
+                ],
+                [
+                    9,
+                    13
+                ],
+                [
+                    10,
+                    11
+                ],
+                [
+                    10,
+                    12
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_14.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                10,
+                11,
+                12,
+                13
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    10,
+                    11
+                ],
+                [
+                    10,
+                    13
+                ],
+                [
+                    11,
+                    10
+                ],
+                [
+                    11,
+                    12
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_15.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    12
+                ],
+                [
+                    9,
+                    8
+                ],
+                [
+                    9,
+                    10
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_16.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    12
+                ],
+                [
+                    9,
+                    8
+                ],
+                [
+                    9,
+                    10
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_17.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    12
+                ],
+                [
+                    9,
+                    8
+                ],
+                [
+                    9,
+                    10
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_18.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    12
+                ],
+                [
+                    9,
+                    8
+                ],
+                [
+                    9,
+                    10
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_19.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13
+            ],
+            "summary": {
+                "covered_lines": 8,
+                "num_statements": 8,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    9,
+                    10
+                ],
+                [
+                    9,
+                    13
+                ],
+                [
+                    10,
+                    11
+                ],
+                [
+                    10,
+                    12
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_2.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    12
+                ],
+                [
+                    9,
+                    8
+                ],
+                [
+                    9,
+                    10
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_20.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16
+            ],
+            "summary": {
+                "covered_lines": 11,
+                "num_statements": 11,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    9,
+                    10
+                ],
+                [
+                    9,
+                    16
+                ],
+                [
+                    11,
+                    12
+                ],
+                [
+                    11,
+                    15
+                ],
+                [
+                    12,
+                    13
+                ],
+                [
+                    12,
+                    14
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_21.py": {
+            "executed_lines": [
+                1,
+                4,
+                10,
+                12,
+                13,
+                14,
+                15
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    12,
+                    13
+                ],
+                [
+                    12,
+                    15
+                ],
+                [
+                    13,
+                    12
+                ],
+                [
+                    13,
+                    14
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_22.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                10,
+                11,
+                12,
+                14
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    10,
+                    11
+                ],
+                [
+                    10,
+                    14
+                ],
+                [
+                    11,
+                    10
+                ],
+                [
+                    11,
+                    12
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_23.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                10,
+                11,
+                12,
+                14
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    10,
+                    11
+                ],
+                [
+                    10,
+                    14
+                ],
+                [
+                    11,
+                    10
+                ],
+                [
+                    11,
+                    12
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_24.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                11,
+                12,
+                13,
+                14,
+                16
+            ],
+            "summary": {
+                "covered_lines": 8,
+                "num_statements": 9,
+                "percent_covered": 88.23529411764706,
+                "percent_covered_display": "88",
+                "missing_lines": 1,
+                "excluded_lines": 0,
+                "num_branches": 8,
+                "num_partial_branches": 1,
+                "covered_branches": 7,
+                "missing_branches": 1
+            },
+            "missing_lines": [
+                9
+            ],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    11
+                ],
+                [
+                    11,
+                    12
+                ],
+                [
+                    11,
+                    16
+                ],
+                [
+                    12,
+                    11
+                ],
+                [
+                    12,
+                    13
+                ],
+                [
+                    13,
+                    12
+                ],
+                [
+                    13,
+                    14
+                ]
+            ],
+            "missing_branches": [
+                [
+                    8,
+                    9
+                ]
+            ]
+        },
+        "solutions/HumanEval_0_solution_25.py": {
+            "executed_lines": [
+                1,
+                4,
+                9,
+                13,
+                14,
+                15,
+                17
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    13,
+                    14
+                ],
+                [
+                    13,
+                    17
+                ],
+                [
+                    14,
+                    13
+                ],
+                [
+                    14,
+                    15
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_26.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13
+            ],
+            "summary": {
+                "covered_lines": 8,
+                "num_statements": 8,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    13
+                ],
+                [
+                    9,
+                    8
+                ],
+                [
+                    9,
+                    10
+                ],
+                [
+                    11,
+                    9
+                ],
+                [
+                    11,
+                    12
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_27.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13
+            ],
+            "summary": {
+                "covered_lines": 8,
+                "num_statements": 8,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    13
+                ],
+                [
+                    9,
+                    8
+                ],
+                [
+                    9,
+                    10
+                ],
+                [
+                    11,
+                    9
+                ],
+                [
+                    11,
+                    12
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_28.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13
+            ],
+            "summary": {
+                "covered_lines": 8,
+                "num_statements": 8,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    13
+                ],
+                [
+                    9,
+                    8
+                ],
+                [
+                    9,
+                    10
+                ],
+                [
+                    11,
+                    9
+                ],
+                [
+                    11,
+                    12
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_29.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                18
+            ],
+            "summary": {
+                "covered_lines": 11,
+                "num_statements": 11,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    11
+                ],
+                [
+                    13,
+                    14
+                ],
+                [
+                    13,
+                    18
+                ],
+                [
+                    14,
+                    15
+                ],
+                [
+                    14,
+                    16
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_3.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    12
+                ],
+                [
+                    9,
+                    8
+                ],
+                [
+                    9,
+                    10
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_30.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14
+            ],
+            "summary": {
+                "covered_lines": 9,
+                "num_statements": 9,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    9,
+                    10
+                ],
+                [
+                    9,
+                    14
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ],
+                [
+                    12,
+                    10
+                ],
+                [
+                    12,
+                    13
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_31.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18
+            ],
+            "summary": {
+                "covered_lines": 13,
+                "num_statements": 13,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    10,
+                    11
+                ],
+                [
+                    10,
+                    18
+                ],
+                [
+                    11,
+                    12
+                ],
+                [
+                    11,
+                    16
+                ],
+                [
+                    13,
+                    14
+                ],
+                [
+                    13,
+                    15
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_32.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    12
+                ],
+                [
+                    9,
+                    8
+                ],
+                [
+                    9,
+                    10
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_33.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    12
+                ],
+                [
+                    9,
+                    8
+                ],
+                [
+                    9,
+                    10
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_34.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    12
+                ],
+                [
+                    9,
+                    8
+                ],
+                [
+                    9,
+                    10
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_35.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    12
+                ],
+                [
+                    9,
+                    8
+                ],
+                [
+                    9,
+                    10
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_36.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    12
+                ],
+                [
+                    9,
+                    8
+                ],
+                [
+                    9,
+                    10
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_37.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    12
+                ],
+                [
+                    9,
+                    8
+                ],
+                [
+                    9,
+                    10
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_38.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    12
+                ],
+                [
+                    9,
+                    8
+                ],
+                [
+                    9,
+                    10
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_39.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    12
+                ],
+                [
+                    9,
+                    8
+                ],
+                [
+                    9,
+                    10
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_4.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    12
+                ],
+                [
+                    9,
+                    8
+                ],
+                [
+                    9,
+                    10
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_40.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    12
+                ],
+                [
+                    9,
+                    8
+                ],
+                [
+                    9,
+                    10
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_41.py": {
+            "executed_lines": [
+                1,
+                4,
+                9,
+                10,
+                11,
+                12,
+                13
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    10,
+                    11
+                ],
+                [
+                    10,
+                    13
+                ],
+                [
+                    11,
+                    10
+                ],
+                [
+                    11,
+                    12
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_42.py": {
+            "executed_lines": [
+                1,
+                4,
+                9,
+                12,
+                13,
+                14,
+                16
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    12,
+                    13
+                ],
+                [
+                    12,
+                    16
+                ],
+                [
+                    13,
+                    12
+                ],
+                [
+                    13,
+                    14
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_43.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    9,
+                    10
+                ],
+                [
+                    9,
+                    12
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_44.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    9,
+                    10
+                ],
+                [
+                    9,
+                    12
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_45.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                11,
+                12,
+                13,
+                14,
+                16
+            ],
+            "summary": {
+                "covered_lines": 9,
+                "num_statements": 9,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 8,
+                "num_partial_branches": 0,
+                "covered_branches": 8,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    11
+                ],
+                [
+                    11,
+                    12
+                ],
+                [
+                    11,
+                    16
+                ],
+                [
+                    12,
+                    11
+                ],
+                [
+                    12,
+                    13
+                ],
+                [
+                    13,
+                    12
+                ],
+                [
+                    13,
+                    14
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_46.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13
+            ],
+            "summary": {
+                "covered_lines": 8,
+                "num_statements": 8,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    9,
+                    10
+                ],
+                [
+                    9,
+                    13
+                ],
+                [
+                    11,
+                    9
+                ],
+                [
+                    11,
+                    12
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_47.py": {
+            "executed_lines": [
+                1,
+                4,
+                9,
+                13,
+                14,
+                15,
+                16,
+                18
+            ],
+            "summary": {
+                "covered_lines": 8,
+                "num_statements": 8,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    13,
+                    14
+                ],
+                [
+                    13,
+                    18
+                ],
+                [
+                    15,
+                    13
+                ],
+                [
+                    15,
+                    16
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_48.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13
+            ],
+            "summary": {
+                "covered_lines": 8,
+                "num_statements": 8,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    13
+                ],
+                [
+                    9,
+                    8
+                ],
+                [
+                    9,
+                    10
+                ],
+                [
+                    11,
+                    9
+                ],
+                [
+                    11,
+                    12
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_49.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17
+            ],
+            "summary": {
+                "covered_lines": 12,
+                "num_statements": 12,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    9,
+                    10
+                ],
+                [
+                    9,
+                    17
+                ],
+                [
+                    11,
+                    12
+                ],
+                [
+                    11,
+                    16
+                ],
+                [
+                    13,
+                    14
+                ],
+                [
+                    13,
+                    15
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_5.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    12
+                ],
+                [
+                    9,
+                    8
+                ],
+                [
+                    9,
+                    10
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_50.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    9,
+                    10
+                ],
+                [
+                    9,
+                    12
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_51.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                11,
+                12,
+                13,
+                14,
+                16
+            ],
+            "summary": {
+                "covered_lines": 9,
+                "num_statements": 9,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    11
+                ],
+                [
+                    12,
+                    13
+                ],
+                [
+                    12,
+                    16
+                ],
+                [
+                    13,
+                    12
+                ],
+                [
+                    13,
+                    14
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_52.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                11,
+                12,
+                13,
+                14,
+                16
+            ],
+            "summary": {
+                "covered_lines": 9,
+                "num_statements": 9,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    11
+                ],
+                [
+                    12,
+                    13
+                ],
+                [
+                    12,
+                    16
+                ],
+                [
+                    13,
+                    12
+                ],
+                [
+                    13,
+                    14
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_53.py": {
+            "executed_lines": [
+                1,
+                4,
+                10,
+                14,
+                15,
+                16,
+                17,
+                18,
+                20
+            ],
+            "summary": {
+                "covered_lines": 9,
+                "num_statements": 9,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    14,
+                    15
+                ],
+                [
+                    14,
+                    20
+                ],
+                [
+                    15,
+                    14
+                ],
+                [
+                    15,
+                    16
+                ],
+                [
+                    17,
+                    15
+                ],
+                [
+                    17,
+                    18
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_54.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17
+            ],
+            "summary": {
+                "covered_lines": 11,
+                "num_statements": 11,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    11
+                ],
+                [
+                    13,
+                    14
+                ],
+                [
+                    13,
+                    17
+                ],
+                [
+                    14,
+                    15
+                ],
+                [
+                    14,
+                    16
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_55.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    9,
+                    10
+                ],
+                [
+                    9,
+                    12
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_56.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    9,
+                    10
+                ],
+                [
+                    9,
+                    12
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_57.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    9,
+                    10
+                ],
+                [
+                    9,
+                    12
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_58.py": {
+            "executed_lines": [
+                1,
+                4,
+                15,
+                16,
+                17,
+                18,
+                19
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    16,
+                    17
+                ],
+                [
+                    16,
+                    19
+                ],
+                [
+                    17,
+                    16
+                ],
+                [
+                    17,
+                    18
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_59.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    9,
+                    10
+                ],
+                [
+                    9,
+                    12
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_6.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13
+            ],
+            "summary": {
+                "covered_lines": 8,
+                "num_statements": 8,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    13
+                ],
+                [
+                    9,
+                    8
+                ],
+                [
+                    9,
+                    10
+                ],
+                [
+                    11,
+                    9
+                ],
+                [
+                    11,
+                    12
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_60.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                11,
+                12,
+                13,
+                14,
+                16
+            ],
+            "summary": {
+                "covered_lines": 9,
+                "num_statements": 9,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    11
+                ],
+                [
+                    12,
+                    13
+                ],
+                [
+                    12,
+                    16
+                ],
+                [
+                    13,
+                    12
+                ],
+                [
+                    13,
+                    14
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_61.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13
+            ],
+            "summary": {
+                "covered_lines": 8,
+                "num_statements": 8,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    9,
+                    10
+                ],
+                [
+                    9,
+                    13
+                ],
+                [
+                    11,
+                    9
+                ],
+                [
+                    11,
+                    12
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_62.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    9,
+                    10
+                ],
+                [
+                    9,
+                    12
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_63.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    9,
+                    10
+                ],
+                [
+                    9,
+                    12
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_64.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    9,
+                    10
+                ],
+                [
+                    9,
+                    12
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_65.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    9,
+                    10
+                ],
+                [
+                    9,
+                    12
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_66.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13
+            ],
+            "summary": {
+                "covered_lines": 8,
+                "num_statements": 8,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    9,
+                    10
+                ],
+                [
+                    9,
+                    13
+                ],
+                [
+                    11,
+                    9
+                ],
+                [
+                    11,
+                    12
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_67.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13
+            ],
+            "summary": {
+                "covered_lines": 8,
+                "num_statements": 8,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    8,
+                    9
+                ],
+                [
+                    8,
+                    13
+                ],
+                [
+                    9,
+                    8
+                ],
+                [
+                    9,
+                    10
+                ],
+                [
+                    11,
+                    9
+                ],
+                [
+                    11,
+                    12
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_68.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13
+            ],
+            "summary": {
+                "covered_lines": 8,
+                "num_statements": 8,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 6,
+                "num_partial_branches": 0,
+                "covered_branches": 6,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    9,
+                    10
+                ],
+                [
+                    9,
+                    13
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ],
+                [
+                    11,
+                    10
+                ],
+                [
+                    11,
+                    12
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_69.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    9,
+                    10
+                ],
+                [
+                    9,
+                    12
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_7.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    9,
+                    10
+                ],
+                [
+                    9,
+                    12
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_70.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    9,
+                    10
+                ],
+                [
+                    9,
+                    12
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_8.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    9,
+                    10
+                ],
+                [
+                    9,
+                    12
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        },
+        "solutions/HumanEval_0_solution_9.py": {
+            "executed_lines": [
+                1,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12
+            ],
+            "summary": {
+                "covered_lines": 7,
+                "num_statements": 7,
+                "percent_covered": 100.0,
+                "percent_covered_display": "100",
+                "missing_lines": 0,
+                "excluded_lines": 0,
+                "num_branches": 4,
+                "num_partial_branches": 0,
+                "covered_branches": 4,
+                "missing_branches": 0
+            },
+            "missing_lines": [],
+            "excluded_lines": [],
+            "executed_branches": [
+                [
+                    9,
+                    10
+                ],
+                [
+                    9,
+                    12
+                ],
+                [
+                    10,
+                    9
+                ],
+                [
+                    10,
+                    11
+                ]
+            ],
+            "missing_branches": []
+        }
+    },
+    "totals": {
+        "covered_lines": 548,
+        "num_statements": 549,
+        "percent_covered": 99.78046103183316,
+        "percent_covered_display": "99",
+        "missing_lines": 1,
+        "excluded_lines": 0,
+        "num_branches": 362,
+        "num_partial_branches": 1,
+        "covered_branches": 361,
+        "missing_branches": 1
+    }
+}

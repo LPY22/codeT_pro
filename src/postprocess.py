@@ -13,6 +13,8 @@ class PostProcessor:
         database = dict()
         raw_problems = Tools.load_tasks(source_path)#按行加载原始文件（一行是一个问题），从json变成字典，key是task_id
         for task_id in raw_problems.keys():
+            # print(task_id)
+            # print(type(task_id))
             database[raw_problems[task_id]['prompt']] = raw_problems[task_id] #database 放prompt,source_solution键值对，用于之后对齐predict
 
         result = []

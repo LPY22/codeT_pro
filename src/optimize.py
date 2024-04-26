@@ -32,6 +32,7 @@ def excludeAllpassTest(self):
                 scoreList_by_task.append(len(crossList)/length)
             # print(f'task_id:{task_id},crossScore:{scoreList_by_task}')
 #todo:集成学习 采样投票器
+# 对所有测试用例采样m个，采样n次，得到n组排序，取每组前十的solution集合，按solution出现次数排序
 
 #todo：直接对每个共识集执行算覆盖率来选
 

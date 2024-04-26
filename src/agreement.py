@@ -1,11 +1,12 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT license.
-
+import os
+import random
 from collections import defaultdict, Counter
 import logging
 import math
 import src.optimize
-
+from meta import datasetName,modelParamsName
 
 logging.basicConfig(
     format="SystemLog: [%(asctime)s][%(name)s][%(levelname)s] - %(message)s",
@@ -35,6 +36,10 @@ class DataManager:
         self.test_case_string_to_id_range_by_task = dict() #每个任务给test_case排序 string : id id应该是序号
         self.solution_id_to_string_by_task = dict() # 相反的用id 取 solution代码字符串的字典
         self.test_case_id_to_string_by_task = dict() # 同上
+
+        self.task_id_to_entrypoint_prompt = dict() # taskid:函数名的字典
+
+
         
         self.expanded_passed_solution_test_case_pairs_by_task = defaultdict(list) #扩展的solution-test case对，应该和共识集有关
 
@@ -62,6 +67,10 @@ class DataManager:
         for sample in self.sampled_code_by_task:
             task_id = sample['task_id']
             completion = sample['completion']
+            entry_point = sample['entry_point']
+            prompt = sample['prompt']
+            if task_id not in self.task_id_to_entrypoint_prompt.keys():
+                self.task_id_to_entrypoint_prompt[task_id] = (entry_point,prompt)
             self.solution_frequency_by_task[task_id][completion] += 1# defaultdict(Counter)
 
     def _get_test_case_frequency(self):
@@ -134,11 +143,14 @@ class DualAgreement:#set_consistency = DualAgreement(data_manager)
         self.data_manager = data_manager
         self.dual_exec_results_by_task = data_manager.expanded_passed_solution_test_case_pairs_by_task #dual_exec_results_by_task 可重复的id对
         self.solution_id_to_string_by_task = data_manager.solution_id_to_string_by_task
+        self.test_case_id_to_string_by_task = data_manager.test_case_id_to_string_by_task
+        self.task_id_to_entrypoint_prompt = data_manager.task_id_to_entrypoint_prompt
         
         self.solution_passed_cases_by_task = defaultdict(defaultdict)#两层的嵌套字典
         self.caseset_passed_solutions_by_task = defaultdict(defaultdict)
 
         self.caseset_crossScore_by_task = defaultdict(defaultdict)
+        self.sample_list = [] # 采样器列表， 里面每一项都是caseset_passed_solutins_by_task
         
         self._get_solution_passed_case_set()
         logger.info('got solution passed case sets')
@@ -156,9 +168,79 @@ class DualAgreement:#set_consistency = DualAgreement(data_manager)
         logger.info('got case set passed solutions')
         #除去每个task中那些通过了所有solution的testcase
 
-        self._get_caseset_crossScore2()
-        logger.info('计算测试集cross分数2')
+        logger.info("写入共识集文件中...")
+        self._writeConsensusFile()
 
+        # self._get_caseset_crossScore2()
+        # logger.info('计算测试集cross分数2')
+    def _writeConsensusFile(self):
+    #  在data 目录下创建对应的文件夹
+        filepath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        filepath = os.path.join(filepath, "data")
+        rootfilepath = os.path.join(filepath, datasetName +"_"+ modelParamsName+"_Consensus")
+
+        for task_id in list(self.caseset_passed_solutions_by_task.keys())[:2]:
+            filepath1 = os.path.join(rootfilepath,task_id.replace('/','_'))
+            os.makedirs(filepath1,exist_ok=True)
+            entry_point = self.task_id_to_entrypoint_prompt[task_id][0]#取entrypoint
+            prompt = self.task_id_to_entrypoint_prompt[task_id][1]
+            # 写测试文件内容，一个共识集的测试语全部放在一起
+            for idx,caseset in enumerate(self.caseset_passed_solutions_by_task[task_id].keys()):
+                solutionNum = len(self.caseset_passed_solutions_by_task[task_id][caseset])
+                solutionPrefix = task_id.replace('/','_')+'_'+'solution'
+                packageName = f'consensus_{idx}'
+                caseset_str = [self.test_case_id_to_string_by_task[task_id][id] for id in caseset]
+                testFileContent = self.getCasesetContent(caseset_str,entry_point,solutionNum,solutionPrefix,packageName)
+                filepath2 = os.path.join(filepath1, packageName)
+                os.makedirs(filepath2,exist_ok=True)
+                fileName = os.path.join(filepath2,"all_test.py")
+                # 在目录中创建文件并将字符串写入
+                with open(fileName, "w") as file:
+                    file.write(testFileContent)
+                # 写共识集里所有方法的文件，每个方法（函数）单独一个文件
+                for index,solution_id in enumerate(self.caseset_passed_solutions_by_task[task_id][caseset]):
+                    solution_str = self.solution_id_to_string_by_task[task_id][solution_id]
+                    solutionContent = prompt + solution_str + "\n"
+                    filepath = os.path.join(filepath2,'solutions')
+                    os.makedirs(filepath,exist_ok=True)
+                    fileName = os.path.join(filepath,f'{solutionPrefix}_{index}.py')
+                    with open(fileName,"w") as file:
+                        file.write(solutionContent)
+                #共识集里的文件已经写好了，直接算覆盖率 每个task下面的每个consensus文件夹下有一个文件
+                # -HumanEval
+                #    -task_0
+                #       -consensus_0
+                #           -solutions
+                #           -all_test.py
+                #           -.coverage
+                #           -coverage.json
+                #    -task_1
+
+
+                #执行coverage run 和 coverage json 命令 在filepath2目录下 对应consensus一级目录
+
+
+
+    def getCasesetContent(self,caseset,entrypoint,solutionNum,solutionPrefix,packageName):
+        blank_4 = ' ' * 4
+        blank_8 = ' ' * 8
+        blank_12 = ' ' * 12
+        importPart = f''
+        invokePart = f''
+        for i in range(solutionNum):
+            importStatement = f'from solutions.{solutionPrefix}_{i} import {entrypoint} as solution_{i}\n'
+            # importStatement = f'from {packageName}.{solutionPrefix}_{i} import {entrypoint} as solution_{i}\n'
+            invokeStatement = f'check(solution_{i})\n'
+            importPart += importStatement
+            invokePart += invokeStatement
+        content =importPart + f'def check(candidate):\n'
+        for idx, tc in enumerate(caseset):
+            tc = tc.replace(entrypoint,"candidate")
+            multi_line_assertion = tc.strip().replace('\n', f'\n{blank_8}')
+            content += f'\n{blank_4}try:\n{blank_8}{multi_line_assertion}\
+                              \n{blank_4}except Exception as e:\n{blank_8}pass\n'
+        content += invokePart
+        return content
 
     def _excludeAllpassTest(self):
         for task_id in self.solution_passed_cases_by_task.keys():
@@ -173,6 +255,46 @@ class DualAgreement:#set_consistency = DualAgreement(data_manager)
                     for solution in self.solution_passed_cases_by_task[task_id]:
                         self.solution_passed_cases_by_task[task_id][solution] = [ test for test in self.solution_passed_cases_by_task[task_id][solution] if test!=test_case]
             print(f"task{task_id}中排除了{allPassTestNum}个全通过用例")
+    #n是随机抽样的大小 0<n<1
+    def _get_sample_testcase_solution(self,n=0.7):
+        caseset_sample_passed_solutions_by_task = defaultdict(defaultdict)
+        solution_sample_passed_solutions_by_task = defaultdict(defaultdict)
+        for task_id in self.caseset_passed_solutions_by_task.keys():
+            test_cases = self.caseset_passed_solutions_by_task[task_id].keys();
+            # 计算需要选择的元素数量
+            num_select = int(len(test_cases) * n)
+            # 随机选择num_select个元素放入新列表
+            selected_cases = random.sample(test_cases, num_select)
+            for case in selected_cases:
+                caseset_sample_passed_solutions_by_task[task_id][case] = self.caseset_passed_solutions_by_task[task_id][case]
+            for solution in self.solution_passed_cases_by_task[task_id]:
+                solution_sample_passed_solutions_by_task[task_id][solution] = [ testcase for testcase in self.solution_passed_cases_by_task[task_id][solution] if testcase in selected_cases ]
+        return caseset_sample_passed_solutions_by_task,solution_sample_passed_solutions_by_task
+
+    def _get_sampler_caseset_voting_result(self,m,n,k):
+        # m表示采样出多少个来投票 n表示每次采样的百分比
+        # m个投票器用 列表存储[(caseset_pass,solutions_pass),m对。。。]
+        # k表示每次抽样得到的testset solution结果取分数排名前k的共识集
+        def get_top_k(sample_list_item,k):
+            ranked_solutions_by_task = defaultdict(list)
+            sample_solution_passed_case_set,sample_caseset_passed_solution =  sample_list_item
+            for task_id in sample_caseset_passed_solution.keys():
+                flatted_case_set_passed_solutions = []
+                for case_set in sample_caseset_passed_solution[task_id].keys():  # keys是test_case_set 算法就是把能通过的相同的test_case的solution放在一起作为一个共识集
+                    solution_set = sample_caseset_passed_solution[task_id][case_set]
+                    solution_set_score = math.sqrt(len(solution_set))  # 对于solution集合取sqrt 削弱影响
+                    case_set_score = len(case_set)
+                    solution_str_set = [self.solution_id_to_string_by_task[task_id][solution] for solution in
+                                        solution_set]  # 这里把序号转成字符串 放到solution_str_set列表中
+                    flatted_case_set_passed_solutions.append((solution_str_set,
+                                                              case_set_score * solution_set_score))  # 结构是  [([],score1),([],score2),([],score3)]
+                ranked_solutions_by_task[task_id] = sorted(flatted_case_set_passed_solutions, key=lambda x: x[1],
+                                                           reverse=True)[:k]  # 降序排列，分数高的排在前面 key=x[1] 表示按分数case_set_score*solution_set_score来排
+            return ranked_solutions_by_task
+        for i in range(m):# 对所有测试用例采样m个，采样n次，得到n组排序，取每组前十的solution集合，按solution出现次数排序
+            sample_solution_passed_case_set  = self._get_sample_solution_passed_case_set(n)
+            self.sample_list.append(sample_solution_passed_case_set,self._get_sample_caseset_passed_solution(sample_solution_passed_case_set))
+
 
 
     
@@ -183,6 +305,21 @@ class DualAgreement:#set_consistency = DualAgreement(data_manager)
                     self.solution_passed_cases_by_task[task_id][solution].append(test_case)
                 else:
                     self.solution_passed_cases_by_task[task_id][solution] = [test_case]
+    def _get_sample_solution_passed_case_set(self,n):
+        sample_solution_passed_cases_by_task  = defaultdict(defaultdict)
+        for task_id in self.dual_exec_results_by_task:
+            test_case_id_by_task = set()
+            for _, test_case in self.dual_exec_results_by_task[task_id]:
+                test_case_id_by_task.add(test_case)
+            num_selected = int(n*len(test_case_id_by_task))
+            selected_testcase = random.sample(list(test_case_id_by_task),num_selected)
+            for solution, test_case in self.solution_passed_cases_by_task[task_id]:
+                if solution in sample_solution_passed_cases_by_task[task_id]:
+                    sample_solution_passed_cases_by_task[task_id][solution].append(test_case)
+                else:
+                    sample_solution_passed_cases_by_task[task_id][solution] = [test_case]
+        return sample_solution_passed_cases_by_task
+
 
     def _get_caseset_passed_solutions(self):#以testcase为key value是能通过的solution列表 这个task有几个testcase对应字典里面有几个key
         for task_id in self.solution_passed_cases_by_task.keys():
@@ -192,7 +329,16 @@ class DualAgreement:#set_consistency = DualAgreement(data_manager)
                     self.caseset_passed_solutions_by_task[task_id][case_set].append(solution)
                 else:
                     self.caseset_passed_solutions_by_task[task_id][case_set] = [solution]
-
+    def _get_sample_caseset_passed_solution(self,sample_solution_passed_cases_by_task):
+        sample_caseset_passed_solution_by_task= defaultdict(defaultdict)
+        for task_id in sample_solution_passed_cases_by_task.keys():
+            for solution  in sample_solution_passed_cases_by_task[task_id].keys():
+                case_set = tuple(sorted(sample_solution_passed_cases_by_task[task_id][solution]))
+                if case_set in sample_caseset_passed_solution_by_task[task_id]:
+                    sample_caseset_passed_solution_by_task[task_id][case_set].append(solution)
+                else:
+                    sample_caseset_passed_solution_by_task[task_id][case_set] = [solution]
+        return sample_caseset_passed_solution_by_task
     def _get_caseset_crossScore(self):#通过测试集的跨度来计算分数 最后的分数用len(solutions)*crossScore
         for task_id in self.caseset_passed_solutions_by_task.keys():
             length = len(self.caseset_passed_solutions_by_task[task_id].keys())
@@ -236,6 +382,20 @@ class DualAgreement:#set_consistency = DualAgreement(data_manager)
 
     def get_cross_sorted_solutions_without_iter(self):
         logger.info('start to get cross sorted solution without iter')
+        ranked_solutions_by_task = defaultdict(list)
+        for task_id in self.caseset_passed_solutions_by_task.keys():
+            flatted_case_set_passed_solutions = []
+            for case_set in self.caseset_passed_solutions_by_task[task_id].keys():
+                solution_set = self.caseset_passed_solutions_by_task[task_id][case_set]
+                solution_set_score = len(solution_set)
+                # solution_set_score = math.sqrt(len(solution_set))
+                case_set_score = self.caseset_crossScore_by_task[task_id][case_set]
+                solution_str_set = [self.solution_id_to_string_by_task[task_id][solution] for solution in solution_set]
+                flatted_case_set_passed_solutions.append((solution_str_set,case_set_score))
+            ranked_solutions_by_task[task_id] = sorted(flatted_case_set_passed_solutions,key = lambda x:x[1],reverse=True)
+        return ranked_solutions_by_task
+    def get_cross_sorted_solutions_by_voting_without_iter(self):
+        logger.info('start to get cross sorted solution by voting without iter')
         ranked_solutions_by_task = defaultdict(list)
         for task_id in self.caseset_passed_solutions_by_task.keys():
             flatted_case_set_passed_solutions = []

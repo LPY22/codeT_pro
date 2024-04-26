@@ -27,18 +27,30 @@ def _pack_test_cases(test_cases,
     return result
 
 
-def check_correctness_with_test_cases(task_id, prompt, completion, test_cases, timeout):
+def check_correctness_with_test_cases(task_id, prompt, completion, test_cases, timeout,filepath):
     """
     Evaluates the functional correctness of a solution_content by running the test
     suite provided in the problem. 
     """
     extend_timeout = timeout * len(test_cases)
 
+    check_program = (
+            prompt + completion + "\n" +
+            _pack_test_cases(test_cases, timeout)
+    )
+    # todo 写入文件里面
+    directory = os.path.dirname(filepath)
+    # 递归创建目录
+    os.makedirs(directory, exist_ok=True)
+
+    # 在目录中创建文件并将字符串写入
+    with open(filepath, "w") as file:
+        file.write(check_program)
+
     # if(extend_timeout>10):
     #     logging.info(test_cases)
 
     def unsafe_execute():
-
         with create_tempdir():
 
             # These system calls are needed when cleaning up tempdir.
@@ -56,7 +68,6 @@ def check_correctness_with_test_cases(task_id, prompt, completion, test_cases, t
                     prompt + completion + "\n" +
                     _pack_test_cases(test_cases, timeout)
             )
-
             try:
                 exec_globals = {'time_limit': time_limit}
                 with swallow_io():
@@ -98,12 +109,21 @@ def check_correctness_with_test_cases(task_id, prompt, completion, test_cases, t
     )
 
 
-def check_correctness(task_id: str, prompt: str, completion: str, test: str, entry_point: str, timeout: float) -> Dict:
+def check_correctness(task_id: str, prompt: str, completion: str, test: str, entry_point: str, timeout: float , filepath:str) -> Dict:
     """
     Evaluates the functional correctness of a completion by running the test
     suite provided in the problem. #通过给定的测试用例来验证回答的功能正确性
     """
-
+    # if task_id == :
+    check_program = (
+            prompt + completion + "\n" + test + "\n" + f'check({entry_point})'
+        # benchmark里面给的标准测试用例是一个函数 check(candidate) 所以要加上一句调用
+    )
+    directory = os.path.dirname(filepath)
+    # 递归创建目录
+    os.makedirs(directory, exist_ok=True)
+    with open(filepath, "w") as file:
+        file.write(check_program)
     def unsafe_execute():
 
         with create_tempdir():

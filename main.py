@@ -4,7 +4,7 @@
 import argparse
 import logging
 import os
-
+import meta
 from src.postprocess import PostProcessor
 from src.execution import evaluate_with_test_code, evaluate_with_test_cases
 from src.io_utils import Tools
@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
     # predict_solution_path={}
     # predict_test_path={}
-    datasetName="HumanEval"
+    datasetName=meta.datasetName
     modelParamsName = "davinci002_temp0.8_topp0.95_num100_max300"
     # modelParamsName = "incoder6B_temp0.8_topp0.95_num100_max300"
     # modelParamsName = "MBPP_davinci002_temp0.8_topp0.95_num100_max300_code_solution.jsonl"
@@ -86,9 +86,9 @@ if __name__ == '__main__':
     # }
     handled_test_cases = PostProcessor.map_task_id_for_test_case(args.predict_path_for_test, args.source_path_for_test)
     # 返回test_case的defaultdict key是taskid value是列表
-    # directory = os.path.join(args.cache_dir, datasetName, modelParamsName)
-    # if not os.path.exists(directory):
-    #     os.makedirs(directory)
+    directory = os.path.join(args.cache_dir, datasetName, modelParamsName)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
     # ground_truth_exec_result = evaluate_with_test_code(handled_solutions, timeout=args.timeout)#得到一个字典列表，比handled_solution 多了两个属性passed 和 result
     # Tools.dump_pickle(os.path.join(directory,'ground_truth_exec_result.pkl'), ground_truth_exec_result)#中间结果序列化
 
@@ -106,11 +106,11 @@ if __name__ == '__main__':
     set_consistency = DualAgreement(data_manager)
     #初识化DualAgreement
     # ranked_result = set_consistency.get_sorted_solutions_without_iter()
-    ranked_result = set_consistency.get_cross_sorted_solutions_without_iter()
-    #得到一个字典 {task_id1:[([solution_str1,solution_str2,,],score1),([],score2),([],score3)] #在一个列表里面的solution_str属于一个共识集，能通过相同的测试用例集分数也自然相同
-    #            task_id2:[([],score1),([],score2),([],score3)]}
-
-    logger.info('pass rates of ranked solutions')
-    get_result_of_sorted_solutions(ground_truth_exec_result, ranked_result)
-    logger.info('pass rates of random solutions')
-    pass_at_K(ground_truth_exec_result)
+    # ranked_result = set_consistency.get_cross_sorted_solutions_without_iter()
+    # #得到一个字典 {task_id1:[([solution_str1,solution_str2,,],score1),([],score2),([],score3)] #在一个列表里面的solution_str属于一个共识集，能通过相同的测试用例集分数也自然相同
+    # #            task_id2:[([],score1),([],score2),([],score3)]}
+    #
+    # logger.info('pass rates of ranked solutions')
+    # get_result_of_sorted_solutions(ground_truth_exec_result, ranked_result)
+    # logger.info('pass rates of random solutions')
+    # pass_at_K(ground_truth_exec_result)

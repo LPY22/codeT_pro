@@ -1,13 +1,13 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT license.
-
+import os.path
 # import ctypes
 # libgcc_s = ctypes.CDLL('libgcc_s.so.1')
 
-from collections import defaultdict
+from collections import defaultdict,Counter
 from concurrent.futures import as_completed, ProcessPoolExecutor
 import logging
-
+from meta import datasetName
 from src._execution import check_correctness, check_correctness_with_test_cases
 
 logging.basicConfig(
@@ -29,6 +29,7 @@ def evaluate_with_test_code(
         futures = []
         existed_completion = defaultdict(set) #默认value是set的字典
         results = defaultdict(defaultdict)
+        cnt = Counter()
 
         for sample in samples: #现将字典里面的信息读出来
             task_id = sample["task_id"]
@@ -38,11 +39,17 @@ def evaluate_with_test_code(
             completion = sample["completion"]
             if completion in existed_completion[task_id]:
                 continue #如果集合中已经有这个回答了直接进入下一次循环
+            cnt[task_id]+=1
             existed_completion[task_id].add(completion)#将回答加入集合中
-            args = (task_id, prompt, completion, test, entry_point, timeout)
-            future = executor.submit(check_correctness, *args)
-            #使用 *args 的形式对元组 args 进行解包，意味着将元组中的各个元素作为参数传递给check_correctness
-            futures.append(future)#future是个对象类型，可以.result()方法查看传入方法的返回结果 可以用as_completed(futures)按执行完成顺序排列
+            filepath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            filepath = os.path.join(filepath,"data")
+            filepath = os.path.join(filepath,datasetName+"_testcode")
+            filepath = os.path.join(filepath,task_id.replace('/','_')+"_solution_"+str(cnt[task_id])+".py")
+            args = (task_id, prompt, completion, test, entry_point, timeout, filepath)
+            if task_id == "HumanEval/0":
+                future = executor.submit(check_correctness, *args)
+                #使用 *args 的形式对元组 args 进行解包，意味着将元组中的各个元素作为参数传递给check_correctness
+                futures.append(future)#future是个对象类型，可以.result()方法查看传入方法的返回结果 可以用as_completed(futures)按执行完成顺序排列
         logger.info(f'{len(futures)} execution requests are submitted')
         
         for idx, future in enumerate(as_completed(futures)):
@@ -76,13 +83,14 @@ def evaluate_with_test_cases(
         futures = []
         results_list = []
         existed_completion = defaultdict(set)
-
-        for solution in solutions:
+        cnt = Counter()
+        for solution in enumerate(solutions):
             task_id = solution['task_id']
             prompt = solution['prompt']
             completion = solution['completion']
             if completion in existed_completion[task_id]:
                 continue
+            cnt[task_id]+=1
             existed_completion[task_id].add(completion)
             task_test_cases = test_cases_dict[task_id] #读出来的是该问题的测试用例的列表
             # 测试
@@ -94,11 +102,18 @@ def evaluate_with_test_cases(
                 continue
             # get limited test cases
             limited_task_test_cases = [cases_per_sample[:limit] for cases_per_sample in task_test_cases] #这里是限制了每个测试用例的长度，而不是限制的总测试样例的个数
-            limited_task_test_cases = sum(limited_task_test_cases, []) #这里是把测试样例变成
+            limited_task_test_cases = sum(limited_task_test_cases, []) #这里是把测试样例变成一维的
             #todo ？？？这里为什么不是 limit_task_test_cases = task_test_cases[:limit]
-            args = (task_id, prompt, completion, list(set(limited_task_test_cases)), timeout)
-            future = executor.submit(check_correctness_with_test_cases, *args)
-            futures.append(future)
+            filepath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            filepath = os.path.join(filepath,"data")
+            filepath = os.path.join(filepath,datasetName+"_testcases")
+            filepath = os.path.join(filepath,task_id.replace('/','_')+"solution_"+cnt[task_id]+".py")
+            args = (task_id, prompt, completion, list(set(limited_task_test_cases)), timeout , filepath)
+            # future = executor.submit(check_correctness_with_test_cases, *args)
+            # futures.append(future)
+            if task_id == "HumanEval/0":
+                future = executor.submit(check_correctness_with_test_cases, *args)
+                futures.append(future)
 
         logger.info(f'{len(futures)} execution requests are submitted')
         for idx, future in enumerate(as_completed(futures)):
