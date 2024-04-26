@@ -1,0 +1,8 @@
+# 忽略所有以 .log 结尾的文件
+#*.log
+
+# 忽略一个特定的 directory
+data/
+
+# 忽略特定文件或文件夹（相对于项目根目录）
+#src/secret_file.txt
