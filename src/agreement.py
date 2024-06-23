@@ -1,7 +1,9 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT license.
+import json
 import os
 import random
+import subprocess
 from collections import defaultdict, Counter
 import logging
 import math
@@ -14,18 +16,23 @@ logging.basicConfig(
     level=logging.INFO,
 )
 
+
+# # 关闭文件处理器
+# file_handler.close()
+
 logger = logging.getLogger(__name__)
 
 # data_manager = DataManager(dual_exec_result, handled_solutions, handled_test_cases,args.test_case_limit)  # 传入了testcase的运行结果，solution和testcase的字典列表，还有限制
 
 
 class DataManager:
-    def __init__(self, dual_exec_results, sampled_code_by_task, sampled_test_case_by_task, limit):
+    def __init__(self, dual_exec_results, sampled_code_by_task, sampled_test_case_by_task, limit,data_filePath):
         logger.info('handling dual exec results')
         self.dual_exec_results = dual_exec_results
         self.sampled_code_by_task = sampled_code_by_task
         self.sampled_test_case_by_task = sampled_test_case_by_task
         self.limit = limit
+        self.data_filePath = data_filePath
         
         self.solution_frequency_by_task = defaultdict(Counter)# 默认value类型是Counter #每个task的回答数
         self.test_case_frequency_by_task = dict()  #每个task的test case数
@@ -38,7 +45,6 @@ class DataManager:
         self.test_case_id_to_string_by_task = dict() # 同上
 
         self.task_id_to_entrypoint_prompt = dict() # taskid:函数名的字典
-
 
         
         self.expanded_passed_solution_test_case_pairs_by_task = defaultdict(list) #扩展的solution-test case对，应该和共识集有关
@@ -141,6 +147,7 @@ class DataManager:
 class DualAgreement:#set_consistency = DualAgreement(data_manager)
     def __init__(self, data_manager):
         self.data_manager = data_manager
+        self.data_filePath = data_manager.data_filePath
         self.dual_exec_results_by_task = data_manager.expanded_passed_solution_test_case_pairs_by_task #dual_exec_results_by_task 可重复的id对
         self.solution_id_to_string_by_task = data_manager.solution_id_to_string_by_task
         self.test_case_id_to_string_by_task = data_manager.test_case_id_to_string_by_task
@@ -151,7 +158,8 @@ class DualAgreement:#set_consistency = DualAgreement(data_manager)
 
         self.caseset_crossScore_by_task = defaultdict(defaultdict)
         self.sample_list = [] # 采样器列表， 里面每一项都是caseset_passed_solutins_by_task
-        
+        self.dataset_covfile_rootpath = ''
+
         self._get_solution_passed_case_set()
         logger.info('got solution passed case sets')
 
@@ -159,27 +167,39 @@ class DualAgreement:#set_consistency = DualAgreement(data_manager)
 
 
         logger.info('排除全通过测试中...')
-        # self._excludeAllpassTest()
-        src.optimize.excludeAllpassTest(self)
+        self._excludeAllpassTest()
+        # src.optimize.excludeAllpassTest(self)
         logger.info('excluded allPass testcase...')
 
 
         self._get_caseset_passed_solutions()
         logger.info('got case set passed solutions')
+
+        #获得存放数据集覆盖率文件的目录地址
+        # self._get_dataset_covfile_rootpath()
+
         #除去每个task中那些通过了所有solution的testcase
+        #
+        # logger.info("写入共识集文件中...")
+        # self._writeConsensusFile()
 
-        logger.info("写入共识集文件中...")
-        self._writeConsensusFile()
-
-        # self._get_caseset_crossScore2()
-        # logger.info('计算测试集cross分数2')
-    def _writeConsensusFile(self):
-    #  在data 目录下创建对应的文件夹
+        self._get_caseset_crossScore2()
+        logger.info('计算测试集cross分数2')
+    def _get_dataset_covfile_rootpath(self):
         filepath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         filepath = os.path.join(filepath, "data")
-        rootfilepath = os.path.join(filepath, datasetName +"_"+ modelParamsName+"_Consensus")
-
-        for task_id in list(self.caseset_passed_solutions_by_task.keys())[:2]:
+        rootfilepath = os.path.join(filepath, datasetName + "_" + modelParamsName + "_Consensus")
+        self.dataset_covfile_rootpath = rootfilepath
+    def _writeConsensusFile(self):
+    #  在data 目录下创建对应的文件夹
+        rootfilepath = self.dataset_covfile_rootpath
+        os.makedirs(rootfilepath, exist_ok=True)
+        dataset_dict  =  dict() #准备好转为json格式的python字典
+        dataset_dict['datasetName'] = datasetName
+        dataset_dict['modelParamsName'] = modelParamsName
+        dataset_dict['tasks'] = dict()
+        for task_id in list(self.caseset_passed_solutions_by_task.keys()):
+            task_dict = dict()
             filepath1 = os.path.join(rootfilepath,task_id.replace('/','_'))
             os.makedirs(filepath1,exist_ok=True)
             entry_point = self.task_id_to_entrypoint_prompt[task_id][0]#取entrypoint
@@ -189,7 +209,12 @@ class DualAgreement:#set_consistency = DualAgreement(data_manager)
                 solutionNum = len(self.caseset_passed_solutions_by_task[task_id][caseset])
                 solutionPrefix = task_id.replace('/','_')+'_'+'solution'
                 packageName = f'consensus_{idx}'
+                task_dict[packageName] = dict()
+                consensus_dict = task_dict[packageName]
+                consensus_dict['caseset'] = caseset
                 caseset_str = [self.test_case_id_to_string_by_task[task_id][id] for id in caseset]
+                if len(caseset_str)==0:
+                    continue
                 testFileContent = self.getCasesetContent(caseset_str,entry_point,solutionNum,solutionPrefix,packageName)
                 filepath2 = os.path.join(filepath1, packageName)
                 os.makedirs(filepath2,exist_ok=True)
@@ -198,7 +223,9 @@ class DualAgreement:#set_consistency = DualAgreement(data_manager)
                 with open(fileName, "w") as file:
                     file.write(testFileContent)
                 # 写共识集里所有方法的文件，每个方法（函数）单独一个文件
+                temp_index_to_solution_id_dict = {}
                 for index,solution_id in enumerate(self.caseset_passed_solutions_by_task[task_id][caseset]):
+                    temp_index_to_solution_id_dict[index] = solution_id
                     solution_str = self.solution_id_to_string_by_task[task_id][solution_id]
                     solutionContent = prompt + solution_str + "\n"
                     filepath = os.path.join(filepath2,'solutions')
@@ -218,9 +245,76 @@ class DualAgreement:#set_consistency = DualAgreement(data_manager)
 
 
                 #执行coverage run 和 coverage json 命令 在filepath2目录下 对应consensus一级目录
+                # 指定工作目录并执行命令
+                # testpath = 'data/HumanEval_davinci002_temp0.8_topp0.95_num100_max300_Consensus/HumanEval_0/consensus_0'
+                # cwd = os.path.join(projectpath, testpath)
+                # print(cwd)
+                cwd = filepath2
+                warn_output = subprocess.PIPE
+                result = subprocess.run(['coverage', 'run', '--branch', '--source=solutions', 'all_test.py'],
+                                        stderr=warn_output, cwd=cwd)
+                if result.returncode != 0:
+                    print(f'检查all_test文件{cwd}')
+                    print(caseset_str)
+                    # print(result.stderr.decode())
+                result = subprocess.run(
+                    ['coverage', 'json', '--pretty-print', '-q', '-o', 'coverage.json'],
+                    capture_output=False, cwd=cwd)
+                #这时候每个共识集的coverage 文件已经得到了 接下俩就是按每个共识集的json 文件对共识集内部的solutions进行排序 得到solution_id由覆盖率排序的结果
+                solution_id_rank_list,consensus_line_cov_percent,consensus_branch_cov_percent=self.getSolutionRankInConsensusByCov(temp_index_to_solution_id_dict,dataFileName=os.path.join(cwd,'coverage.json'),task_id=task_id)
+                consensus_dict['solution_id_rank_list'] = solution_id_rank_list
+                consensus_dict['consensus_line_cov_percent'] =consensus_line_cov_percent
+                consensus_dict['consensus_branch_cov_percent'] = consensus_branch_cov_percent
+            #按照json文件total的顺序 对每个共识集进行排序-》决定先不排序 先用字典形式存下来
+            dataset_dict['tasks'][task_id] = task_dict
+        with open(os.path.join(rootfilepath,"dataset_cov.json"), "w") as json_file:
+            json.dump(dataset_dict, json_file,indent=4,separators=(',',': '))
 
+    def getSolutionRankInConsensusByCov(self,temp_index_to_solution_id_dict,dataFileName,task_id):
+        # dataFileName = './coverage_test.json'
 
+        # 将 JSON 数据解析为 Python 字典
+        # 读取文件并使用 json.load() 转换为字典
+        with open(dataFileName, 'r') as f:
+            coverage_data = json.load(f)
 
+        # 获取 files 部分
+        files = coverage_data['files']
+        solution_tuple_list = []  # 放三元组 然后用lambda函数进行排序
+        for solution in files.keys():
+            solution_result = files[solution]
+            solution_index = int(solution.split('_')[-1].split('.')[0])
+            # 都自己计算吧 coverage库给出的只保留了一位小数
+            solution_line_cov_percent = float(solution_result['summary']['covered_lines']) / int(solution_result['summary']['num_statements']) if int(solution_result['summary']['num_statements'])!=0 else 0
+            # 按覆盖的分支数百分比来排序更具有说服力
+            solution_branch_cov_percent = float(solution_result['summary']['covered_branches']) / int(solution_result['summary']['num_branches']) if int(solution_result['summary']['num_branches'])!=0 else 0
+            solution_tuple_list.append((solution_index, solution_line_cov_percent, solution_branch_cov_percent))
+
+        # 排序
+        # cmp参数接受一个比较两个项的函数。如果函数返回True，则第一个参数应该排在第二个参数之前
+        def index_tuple_compare(x):
+            # 先比较第二项行覆盖率 再比较第三项分支覆盖率 最后比较第一项index自然排序
+            return x[1], x[2], -x[0]
+
+        solution_index_rank_list = sorted(solution_tuple_list, key=lambda x: index_tuple_compare(x), reverse=True)
+        # print(solution_index_rank_list)
+        # 将id转为solution_id
+        solution_id_rank_list = []
+        for item in solution_index_rank_list:
+            solution_id_rank_list.append(temp_index_to_solution_id_dict[item[0]])
+        # 读出total
+        total_consensus_cov = coverage_data['totals']
+        consensus_line_cov_percent = float(total_consensus_cov['percent_covered'])
+        def log(consensusName,task_id):
+            warnlogger = logging.getLogger("warn_logger")
+            datasetPath = os.path.dirname(os.path.dirname(os.path.dirname(dataFileName)))
+            FileHandlerPath = os.path.join(datasetPath,'logfile.txt')
+            file_handler = logging.FileHandler(FileHandlerPath)
+            warnlogger.addHandler(file_handler)
+            warnlogger.warning(f"数据集中task：{task_id}的共识集：{consensusName}的total_num_branches为零，请注意")
+            return 0
+        consensus_branch_cov_percent = float(total_consensus_cov['covered_branches']) / int(total_consensus_cov['num_branches']) if int(total_consensus_cov['num_branches'])!=0 else log(os.path.basename(os.path.dirname(dataFileName)),task_id)
+        return solution_id_rank_list,consensus_line_cov_percent,consensus_branch_cov_percent
     def getCasesetContent(self,caseset,entrypoint,solutionNum,solutionPrefix,packageName):
         blank_4 = ' ' * 4
         blank_8 = ' ' * 8
@@ -243,6 +337,7 @@ class DualAgreement:#set_consistency = DualAgreement(data_manager)
         return content
 
     def _excludeAllpassTest(self):
+        data_dict = {}
         for task_id in self.solution_passed_cases_by_task.keys():
             test_case_counter = Counter()
             for solution in self.solution_passed_cases_by_task[task_id]:
@@ -254,7 +349,11 @@ class DualAgreement:#set_consistency = DualAgreement(data_manager)
                     allPassTestNum+=1
                     for solution in self.solution_passed_cases_by_task[task_id]:
                         self.solution_passed_cases_by_task[task_id][solution] = [ test for test in self.solution_passed_cases_by_task[task_id][solution] if test!=test_case]
+            data_dict[task_id] = allPassTestNum
             print(f"task{task_id}中排除了{allPassTestNum}个全通过用例")
+        # 将字典转换为JSON字符串并写入文件
+        with open(os.path.join(self.data_filePath,'AllpassTest.json'), 'w') as file:
+            json.dump(data_dict, file)
     #n是随机抽样的大小 0<n<1
     def _get_sample_testcase_solution(self,n=0.7):
         caseset_sample_passed_solutions_by_task = defaultdict(defaultdict)
@@ -407,4 +506,26 @@ class DualAgreement:#set_consistency = DualAgreement(data_manager)
                 solution_str_set = [self.solution_id_to_string_by_task[task_id][solution] for solution in solution_set]
                 flatted_case_set_passed_solutions.append((solution_str_set,case_set_score))
             ranked_solutions_by_task[task_id] = sorted(flatted_case_set_passed_solutions,key = lambda x:x[1],reverse=True)
+        return ranked_solutions_by_task
+
+    def get_cov_sorted_solutions_without_iter(self):
+        logger.info('start to get sorted solution by coverage without iter')
+        ranked_solutions_by_task = defaultdict(dict)
+        #先找到 数据集对应的文件地址
+        dataset_cov_json = os.path.join(self.dataset_covfile_rootpath,'dataset_cov.json')
+        with open(dataset_cov_json,'r') as f:
+            dataset_cov_data = json.load(f)
+        tasks = dataset_cov_data['tasks']
+        for task_id in tasks.keys():
+            flatted_case_set_passed_solutions = []
+            # print(list(tasks[task_id].values())[0]['consensus_line_cov_percent'])
+            consensus_iter = tasks[task_id].values()
+            # consensus_iter =
+            sorted_consensus_list = sorted(list(consensus_iter), key=lambda x: (x.get('consensus_line_cov_percent',int(0))*len(),x.get('consensus_branch_cov_percent',int(0))), reverse=True)
+            for consensus in sorted_consensus_list:
+                if 'solution_id_rank_list' in consensus.keys():
+                    solution_str_set = [self.solution_id_to_string_by_task[task_id][solution] for solution in consensus['solution_id_rank_list']]
+                    # 用两个覆盖率指标相加作为分数， 但其实排序还是优先行覆盖率再分支覆盖率的 不用相加了，用三元组算了
+                    flatted_case_set_passed_solutions.append((solution_str_set,consensus['consensus_line_cov_percent'],consensus['consensus_branch_cov_percent']))
+            ranked_solutions_by_task[task_id] = flatted_case_set_passed_solutions#不用排序了，已经是排好的了
         return ranked_solutions_by_task

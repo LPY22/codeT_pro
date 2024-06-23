@@ -45,11 +45,14 @@ def evaluate_with_test_code(
             filepath = os.path.join(filepath,"data")
             filepath = os.path.join(filepath,datasetName+"_testcode")
             filepath = os.path.join(filepath,task_id.replace('/','_')+"_solution_"+str(cnt[task_id])+".py")
-            args = (task_id, prompt, completion, test, entry_point, timeout, filepath)
-            if task_id == "HumanEval/0":
-                future = executor.submit(check_correctness, *args)
-                #使用 *args 的形式对元组 args 进行解包，意味着将元组中的各个元素作为参数传递给check_correctness
-                futures.append(future)#future是个对象类型，可以.result()方法查看传入方法的返回结果 可以用as_completed(futures)按执行完成顺序排列
+            # args = (task_id, prompt, completion, test, entry_point, timeout,filepath)
+            args = (task_id, prompt, completion, test, entry_point, timeout,'')
+            # if task_id == "HumanEval/0":
+            #     future = executor.submit(check_correctness, *args)
+            #     #使用 *args 的形式对元组 args 进行解包，意味着将元组中的各个元素作为参数传递给check_correctness
+            #     futures.append(future)#future是个对象类型，可以.result()方法查看传入方法的返回结果 可以用as_completed(futures)按执行完成顺序排列
+            future = executor.submit(check_correctness,*args)
+            futures.append(future)
         logger.info(f'{len(futures)} execution requests are submitted')
         
         for idx, future in enumerate(as_completed(futures)):
@@ -84,7 +87,7 @@ def evaluate_with_test_cases(
         results_list = []
         existed_completion = defaultdict(set)
         cnt = Counter()
-        for solution in enumerate(solutions):
+        for index,solution in enumerate(solutions):
             task_id = solution['task_id']
             prompt = solution['prompt']
             completion = solution['completion']
@@ -104,16 +107,18 @@ def evaluate_with_test_cases(
             limited_task_test_cases = [cases_per_sample[:limit] for cases_per_sample in task_test_cases] #这里是限制了每个测试用例的长度，而不是限制的总测试样例的个数
             limited_task_test_cases = sum(limited_task_test_cases, []) #这里是把测试样例变成一维的
             #todo ？？？这里为什么不是 limit_task_test_cases = task_test_cases[:limit]
-            filepath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            filepath = os.path.join(filepath,"data")
-            filepath = os.path.join(filepath,datasetName+"_testcases")
-            filepath = os.path.join(filepath,task_id.replace('/','_')+"solution_"+cnt[task_id]+".py")
-            args = (task_id, prompt, completion, list(set(limited_task_test_cases)), timeout , filepath)
-            # future = executor.submit(check_correctness_with_test_cases, *args)
-            # futures.append(future)
-            if task_id == "HumanEval/0":
-                future = executor.submit(check_correctness_with_test_cases, *args)
-                futures.append(future)
+            # filepath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            # filepath = os.path.join(filepath,"data")
+            # filepath = os.path.join(filepath,datasetName+"_testcases")
+            # print(task_id)
+            # filepath = os.path.join(filepath,task_id.replace('/','_')+"solution_"+str(cnt[task_id])+".py")
+            # args = (task_id, prompt, completion, list(set(limited_task_test_cases)), timeout , filepath)
+            args = (task_id, prompt, completion, list(set(limited_task_test_cases)), timeout , '')
+            future = executor.submit(check_correctness_with_test_cases, *args)
+            futures.append(future)
+            # if task_id == "HumanEval/0":
+            #     future = executor.submit(check_correctness_with_test_cases, *args)
+            #     futures.append(future)
 
         logger.info(f'{len(futures)} execution requests are submitted')
         for idx, future in enumerate(as_completed(futures)):

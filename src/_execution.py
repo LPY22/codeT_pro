@@ -38,14 +38,15 @@ def check_correctness_with_test_cases(task_id, prompt, completion, test_cases, t
             prompt + completion + "\n" +
             _pack_test_cases(test_cases, timeout)
     )
-    # todo 写入文件里面
-    directory = os.path.dirname(filepath)
-    # 递归创建目录
-    os.makedirs(directory, exist_ok=True)
+    if(filepath):
+        # todo 写入文件里面
+        directory = os.path.dirname(filepath)
+        # 递归创建目录
+        os.makedirs(directory, exist_ok=True)
 
-    # 在目录中创建文件并将字符串写入
-    with open(filepath, "w") as file:
-        file.write(check_program)
+        # 在目录中创建文件并将字符串写入
+        with open(filepath, "w") as file:
+            file.write(check_program)
 
     # if(extend_timeout>10):
     #     logging.info(test_cases)
@@ -119,11 +120,12 @@ def check_correctness(task_id: str, prompt: str, completion: str, test: str, ent
             prompt + completion + "\n" + test + "\n" + f'check({entry_point})'
         # benchmark里面给的标准测试用例是一个函数 check(candidate) 所以要加上一句调用
     )
-    directory = os.path.dirname(filepath)
-    # 递归创建目录
-    os.makedirs(directory, exist_ok=True)
-    with open(filepath, "w") as file:
-        file.write(check_program)
+    if(filepath):
+        directory = os.path.dirname(filepath)
+        # 递归创建目录
+        os.makedirs(directory, exist_ok=True)
+        with open(filepath, "w") as file:
+            file.write(check_program)
     def unsafe_execute():
 
         with create_tempdir():

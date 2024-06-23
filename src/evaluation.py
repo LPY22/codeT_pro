@@ -31,11 +31,11 @@ def _turn_solution_scores_into_choose_count(sorted_solution_scores, topk):
     if wrapped:
         last_score = sorted_solution_scores[0][1] #先取出了最高分
         merged_solutions_and_score = [sorted_solution_scores[0]] #为啥要带括号[()]
-        for solutions, score in sorted_solution_scores[1:]:#对于第二个及以后的元组
+        for solutions, score in sorted_solution_scores[1:]:#对于第二个及以后的元组  使用覆盖率排序结果时分数会有两个 第一个是行覆盖率 第二个是分支覆盖率
             if score == last_score:
                 last_solutions = merged_solutions_and_score[-1][0]
                 # merged_solutions_and_score[-1] = (last_solutions + solutions, score) #如果分数一样，就把两个共识集里面的solution合并，等于是完全按照分数score来排列
-                merged_solutions_and_score[-1] = (list(set(last_solutions) & set(solutions)), score) #如果分数一样，就把两个共识集里面的solution合并，等于是完全按照分数score来排列
+                merged_solutions_and_score[-1] = (list(set(last_solutions) & set(solutions)), score) #todo 如果分数一样，就把两个共识集里面的solution合并，等于是完全按照分数score来排列
             else:
                 merged_solutions_and_score.append((solutions, score)) #不同就直接往后append,然后把last_score往后传递
                 last_score = score
@@ -56,30 +56,31 @@ def _turn_solution_scores_into_choose_count(sorted_solution_scores, topk):
         for i, choose_count in enumerate(intial_choose_count):
             result[i] = (result[i][0], choose_count) #更新每个solutions集的choose_count 似的总数满足topk
         return result
-    
+
 
 def get_result_of_sorted_solutions(ground_truth_results_list, sorted_solutions_by_task, topks=[1,2,10]):
     # sorted_solutions_by_task {task_id: [([solutions], score), ...]}
     def _count_correct(solutions: list, ground_truth_results: dict) -> int:
         return sum([ground_truth_results[s] for s in solutions])
-    
+
     ground_truth_results = _dictionized_ground_truth_results(ground_truth_results_list) #转成更方便的双重字典{ task_id1 ：{solution1 ：是否通过(只有一个值因为只有一个标准测试)}}
     topk_results = dict()
     for topk in topks: #[1,2,10]
         random_pass_at_k_by_task = pass_at_K_by_task(ground_truth_results_list, k=topk) #得到一个字典，算出每个task_id的pass #ground_truth_result_list对应的solution只有标准测试通不通过的结果
         pass_rates = []
         for task_id in ground_truth_results.keys():
+            # print(task_id)
             all_wrong_probability = 1
             if task_id in sorted_solutions_by_task and sorted_solutions_by_task[task_id]: #验证存在和非空
                 solutions_and_probability = _turn_solution_scores_into_choose_count(sorted_solutions_by_task[task_id], topk)
                 for solutions, choose_count in solutions_and_probability:
                     current_wrong_prob = _estimator(len(solutions), _count_correct(solutions, ground_truth_results[task_id]), 1)
                     repeat_current_wrong_prob = pow(current_wrong_prob, choose_count)
+                    # todo 这里算得不太合理啊 应该是按每个共识集中按顺序来抽才对
                     all_wrong_probability *= repeat_current_wrong_prob
                 pass_rates.append(1-all_wrong_probability)
             else:
                 pass_rates.append(random_pass_at_k_by_task[task_id])
-        
         # the avg rate of all tasks
         topk_results[f'pass@{topk}'] = round(statistics.mean(pass_rates), 4)
     logger.info(topk_results)
@@ -117,7 +118,7 @@ def pass_at_K(results, k = [1, 10, 100]):
                  for k in ks if (total >= k).all()} #np.ndarray .all()方法对应矩阵里面的每个元素都要为true
     logger.info(pass_at_k)
 
-def _estimator(n: int, c: int, k: int) -> float: #求一个组合数，后面求pass@k时候采样要用到 沛= 1-C(n-c,k)/c(n-k) 1-抽到的回答全不pass
+def _estimator(n: int, c: int, k: int) -> float: #求一个组合数，后面求pass@k时候采样要用到 沛= 1-C(n-c,k)/c(n,k) 1-抽到的回答全不pass
     """
     Calculates comb(n - c, k) / comb(n, k).
     """

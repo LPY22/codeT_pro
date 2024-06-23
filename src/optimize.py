@@ -17,6 +17,7 @@ def excludeAllpassTest(self):
                                                                                  task_id][solution] if
                                                                              test != test_case]
         print(f"task{task_id}中排除了{allPassTestNum}个全通过用例")
+
 #选横跨度最大的共识集
     def _get_caseset_crossScore2(self):#通过测试集的跨度来计算分数 最后的分数用len(solutions)*crossScore
         for task_id in self.caseset_passed_solutions_by_task.keys():

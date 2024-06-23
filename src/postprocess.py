@@ -9,8 +9,11 @@ STOP_TOKEN = ['\nclass', '\ndef', '\n#', '\nif', '\nprint']
 
 class PostProcessor:
     @staticmethod
-    def map_task_id_for_solution(predict_path, source_path):#source代表原始的文件 就是只有prompt那些 predict表示有采样的samples
+    def map_task_id_for_solution(predict_path, source_path,sample_section):#source代表原始的文件 就是只有prompt那些 predict表示有采样的samples
         database = dict()
+        left = sample_section[0]
+        right = sample_section[1] if sample_section[1]!=-1 else 65535
+        sample = right or left
         raw_problems = Tools.load_tasks(source_path)#按行加载原始文件（一行是一个问题），从json变成字典，key是task_id
         for task_id in raw_problems.keys():
             # print(task_id)
@@ -21,6 +24,9 @@ class PostProcessor:
         predictions = Tools.load_jsonl(predict_path)#加载预测文件（带模型采样输出）预测文件每一行只有prompt和samples两个属性，prompt是字符串类型，samples是列表
         for pre in predictions:
             task = database[pre['prompt']]#先找到prompt属性对齐
+            #todo 对于MBPP数据集抽样了 if int(task['task_id'].split('/')[-1])<600: continue
+            # number = int(task['task_id'].split('/')[-1])
+            # if number<left or number>right: continue
             if not pre['samples']:
                 result.append({
                     'task_id': task['task_id'],
@@ -41,8 +47,10 @@ class PostProcessor:
         return result, len(raw_problems)
 
     @staticmethod
-    def map_task_id_for_test_case(predict_path, source_path):
+    def map_task_id_for_test_case(predict_path, source_path,sample_section):
         database = dict()
+        left = sample_section[0]
+        right = sample_section[1] if sample_section[1]!=-1 else 65535
         raw_problems = Tools.load_tasks(source_path)
         for task_id in raw_problems.keys():
             database[raw_problems[task_id]['prompt']] = raw_problems[task_id]
@@ -51,6 +59,9 @@ class PostProcessor:
         predictions = Tools.load_jsonl(predict_path)
         for pre in predictions:
             task = database[pre['prompt']]#这里因为测试用例生成不是最终目标，最终目标是solution的相关指标。所以这里没有对test_predict的samples判空
+            #todo 对于MBPP抽样了 davinci if int(task['task_id'].split('/')[-1])<600: continue
+            # number = int(task['task_id'].split('/')[-1])
+            # if number<left or number>right: continue
             for sample in pre['samples']:
                 test_cases = PostProcessor.test_case_extract(sample, task['entry_point'])#停词抽取
                 test_cases_by_task[task['task_id']].append(test_cases)#而且这里没有用list,而是用字典归类了，用【】列表来存储同一个问题的test

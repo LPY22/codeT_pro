@@ -9,8 +9,10 @@ source_test_path = {"HumanEval": "./data/dataset/HumanEval_for_test_case_generat
 
 # predict_solution_path={}
 # predict_test_path={}
-datasetName = "HumanEval"
+# datasetName = "HumanEval"
+datasetName = "MBPP"
 modelParamsName = "davinci002_temp0.8_topp0.95_num100_max300"
 # modelParamsName = "incoder6B_temp0.8_topp0.95_num100_max300"
+# modelParamsName = "codegen16B_temp0.8_topp0.95_num100_max300"
 # modelParamsName = "MBPP_davinci002_temp0.8_topp0.95_num100_max300_code_solution.jsonl"
 # logger.info(datasetName+"\t"+modelParamsName)
